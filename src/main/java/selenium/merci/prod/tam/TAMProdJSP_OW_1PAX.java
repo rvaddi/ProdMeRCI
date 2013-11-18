@@ -156,7 +156,7 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 
 	private void fareReviewPage() {
 		// TODO Auto-generated method stub
-		driver.findElement(By.xpath(TAM_Constants.FARE_REVIEW_CONTINUE)).click();
+		driver.findElement(By.xpath(TAM_Constants.FARE_REVIEW_CONTINUE_OW)).click();
 	}
 
 
@@ -262,7 +262,7 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 
 		//Select type of Trip || Select round Trip
 		//TODO: move hard Coding
-		driver.findElement(By.id(TAM_Constants.TRIP_TYPE)).click();
+		driver.findElement(By.id(TAM_Constants.TRIP_TYPE_ONEWAY)).click();
 
 		//Update the dates
 		updateDates();

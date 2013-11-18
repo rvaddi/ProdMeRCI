@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import com.amadeus.selenium.extension.WebElementSikuli;
 import com.amadeus.selenium.runner.SeleniumSEPTestAdvanced;
 
 /**
@@ -60,13 +59,92 @@ public class TAMProdJSP_RT_1PAX extends SeleniumSEPTestAdvanced{
 
 	private void purcPage() {
 		// TODO Auto-generated method stub
+		
+		
+		//verify cyberSource
+		String viewSource = driver.getPageSource();
+		
+		if(viewSource.contains("clear.png") && viewSource.contains("check.js") && viewSource.contains("fp.swf")){
+			System.out.println("cyberSource Validation Success");
+		}
+		
+		//CC Details
+		
+		driver.findElement(By.id("AIR_CC_NAME_ON_CARD")).sendKeys("ETVTST");
+		new Select(driver.findElement(By.id("AIR_CC_TYPE"))).selectByVisibleText("Visa");
+		driver.findElement(By.id("AIR_CC_NUMBER")).sendKeys("4012999999999999");
+		driver.findElement(By.id("CC_DIGIT_CODE_AIR_1")).sendKeys("123");
+		new Select(driver.findElement(By.id("CCexpiryDateYear"))).selectByVisibleText("2015");
+		
+		//Billing address
+		driver.findElement(By.id("AIR_CC_ADDRESS_FIRSTLINE")).sendKeys("Address Line one");
+		
+		driver.findElement(By.id("AIR_CC_ADDRESS_SECONDLINE")).sendKeys("Address Line Two");
+		
+		driver.findElement(By.id("AIR_CC_ADDRESS_CITY")).sendKeys("City");
+		
+		driver.findElement(By.id("AIR_CC_ADDRESS_STATE")).sendKeys("KA");
+		
+		driver.findElement(By.id("AIR_CC_ADDRESS_ZIPCODE")).sendKeys("5600001");
+		
+		driver.findElement(By.id("AIR_CC_ADDRESS_COUNTRY_TXT")).sendKeys("USA");
+		
+		
+		//Click confirm
+		driver.findElement(By.id("CheckPenaliesBox")).click();
+		
+		driver.findElement(By.id("continueBtn")).click();
 
 	}
 
 
 	private void alipPage() {
 		// TODO Auto-generated method stub
+		
+		enterContactDetails();
+		enterPAXDetails();
+		
+		driver.findElement(By.id("continueBtn")).click();
 
+	}
+
+
+	private void enterPAXDetails() {
+		
+		Select title = new Select(driver.findElement(By.id("TITLE_1")));
+		int sizeOfDropDown = title.getOptions().size();
+		
+		title.selectByIndex(sizeOfDropDown - 1);
+		
+		// enter first name
+		//TODO: remove hard coding
+		driver.findElement(By.id("FIRST_NAME_1")).sendKeys("FirstName");
+		
+		// enter last name
+		//TODO: remove hard coding
+		driver.findElement(By.id("LAST_NAME_1")).sendKeys("LastName");
+		
+		// enter DOB
+		//TODO: remove hard coding
+		Select day = new Select(driver.findElement(By.id("paxDobDay_1")));
+		int sizeOfDayDropDown = day.getOptions().size();
+		day.selectByIndex(sizeOfDayDropDown-1);
+
+		//TODO: remove hard coding		
+		Select month = new Select(driver.findElement(By.id("paxDobMonth_1")));
+		int sizeOfMonthDropDown = month.getOptions().size();
+		month.selectByIndex(sizeOfMonthDropDown-1);
+		
+		Select year = new Select(driver.findElement(By.id("paxDobYear_1")));
+		year.selectByVisibleText("1985");
+		
+	}
+
+
+	private void enterContactDetails() {
+		driver.findElement(By.name("CONTACT_POINT_MOBILE_1")).sendKeys("1111111111");
+		driver.findElement(By.name("NOTIF_VALUE_1_1")).sendKeys("2222222222");
+		driver.findElement(By.name("CONTACT_POINT_EMAIL_1")).sendKeys("test@test.com");
 	}
 
 

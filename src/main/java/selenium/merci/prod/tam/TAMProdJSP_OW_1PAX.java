@@ -10,6 +10,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import com.amadeus.selenium.runner.SeleniumSEPTestAdvanced;
+import selenium.merci.prod.constants.TAM_Constants;
 
 /**
  * Prod Sanity for TAM
@@ -18,6 +19,9 @@ import com.amadeus.selenium.runner.SeleniumSEPTestAdvanced;
  */
 
 public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
+	
+
+	
 
 
 	@Override
@@ -70,30 +74,27 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 		
 		//CC Details
 		
-		driver.findElement(By.id("AIR_CC_NAME_ON_CARD")).sendKeys("ETVTST");
-		new Select(driver.findElement(By.id("AIR_CC_TYPE"))).selectByVisibleText("Visa");
-		driver.findElement(By.id("AIR_CC_NUMBER")).sendKeys("4012999999999999");
-		driver.findElement(By.id("CC_DIGIT_CODE_AIR_1")).sendKeys("123");
-		new Select(driver.findElement(By.id("CCexpiryDateYear"))).selectByVisibleText("2015");
+		driver.findElement(By.id(TAM_Constants.NAME_ON_CARD)).sendKeys("ETVTST");
+		new Select(driver.findElement(By.id(TAM_Constants.CARDTYPE_DROPDOWN))).selectByVisibleText("Visa");
+		driver.findElement(By.id(TAM_Constants.CARD_NUMBER)).sendKeys("4012999999999999");
+		driver.findElement(By.id(TAM_Constants.CVV_CODE)).sendKeys("123");
+		new Select(driver.findElement(By.id(TAM_Constants.EXP_YEAR))).selectByVisibleText("2015");
+		
+		
 		
 		//Billing address
-		driver.findElement(By.id("AIR_CC_ADDRESS_FIRSTLINE")).sendKeys("Address Line one");
 		
-		driver.findElement(By.id("AIR_CC_ADDRESS_SECONDLINE")).sendKeys("Address Line Two");
-		
-		driver.findElement(By.id("AIR_CC_ADDRESS_CITY")).sendKeys("City");
-		
-		driver.findElement(By.id("AIR_CC_ADDRESS_STATE")).sendKeys("KA");
-		
-		driver.findElement(By.id("AIR_CC_ADDRESS_ZIPCODE")).sendKeys("5600001");
-		
-		driver.findElement(By.id("AIR_CC_ADDRESS_COUNTRY_TXT")).sendKeys("USA");
+		driver.findElement(By.id(TAM_Constants.BILLING_FIRSTLINE_ADDRESS)).sendKeys("Address Line one");
+		driver.findElement(By.id(TAM_Constants.BILLING_SECONDLINE_ADDRESS)).sendKeys("Address Line Two");
+		driver.findElement(By.id(TAM_Constants.BILLING_CITY_ADDRESS)).sendKeys("City");
+		driver.findElement(By.id(TAM_Constants.BILLING_STATE_ADDRESS)).sendKeys("KA");
+		driver.findElement(By.id(TAM_Constants.BILLING_ZIPCODE_ADDRESS)).sendKeys("5600001");
+		driver.findElement(By.id(TAM_Constants.BILLING_COUNTRY)).sendKeys("USA");
 		
 		
 		//Click confirm
-		driver.findElement(By.id("CheckPenaliesBox")).click();
-		
-		driver.findElement(By.id("continueBtn")).click();
+		driver.findElement(By.id(TAM_Constants.CONDITIONS_CHECKBOX)).click();
+		driver.findElement(By.id(TAM_Constants.PURCPAGE_CONTINUR)).click();
 
 	}
 
@@ -104,54 +105,58 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 		enterContactDetails();
 		enterPAXDetails();
 		
-		driver.findElement(By.id("continueBtn")).click();
+		
+		driver.findElement(By.id(TAM_Constants.ALPI_CONTINUE)).click();
 
 	}
 
 
 	private void enterPAXDetails() {
 		
-		Select title = new Select(driver.findElement(By.id("TITLE_1")));
+		
+		Select title = new Select(driver.findElement(By.id(TAM_Constants.PAX_TITLE)));
 		int sizeOfDropDown = title.getOptions().size();
 		
 		title.selectByIndex(sizeOfDropDown - 1);
 		
 		// enter first name
 		//TODO: remove hard coding
-		driver.findElement(By.id("FIRST_NAME_1")).sendKeys("FirstName");
+		driver.findElement(By.id(TAM_Constants.PAX_FIRSTNAME)).sendKeys("FirstName");
 		
 		// enter last name
 		//TODO: remove hard coding
-		driver.findElement(By.id("LAST_NAME_1")).sendKeys("LastName");
+		driver.findElement(By.id(TAM_Constants.PAX_LASTNAME)).sendKeys("LastName");
 		
 		// enter DOB
 		//TODO: remove hard coding
-		Select day = new Select(driver.findElement(By.id("paxDobDay_1")));
+		Select day = new Select(driver.findElement(By.id(TAM_Constants.PAX_DAY_DOB)));
 		int sizeOfDayDropDown = day.getOptions().size();
 		day.selectByIndex(sizeOfDayDropDown-1);
 
 		//TODO: remove hard coding		
-		Select month = new Select(driver.findElement(By.id("paxDobMonth_1")));
+		Select month = new Select(driver.findElement(By.id(TAM_Constants.PAX_MONTH_DOB)));
 		int sizeOfMonthDropDown = month.getOptions().size();
 		month.selectByIndex(sizeOfMonthDropDown-1);
 		
-		Select year = new Select(driver.findElement(By.id("paxDobYear_1")));
+		
+		Select year = new Select(driver.findElement(By.id(TAM_Constants.PAX_YER_DOB)));
 		year.selectByVisibleText("1985");
 		
 	}
 
 
 	private void enterContactDetails() {
-		driver.findElement(By.name("CONTACT_POINT_MOBILE_1")).sendKeys("1111111111");
-		driver.findElement(By.name("NOTIF_VALUE_1_1")).sendKeys("2222222222");
-		driver.findElement(By.name("CONTACT_POINT_EMAIL_1")).sendKeys("test@test.com");
+		
+		
+		driver.findElement(By.name(TAM_Constants.CONTACT_MOBILE)).sendKeys("1111111111");
+		driver.findElement(By.name(TAM_Constants.CONTACT_SMS_NOTIFICATION)).sendKeys("2222222222");
+		driver.findElement(By.name(TAM_Constants.CONTACT_EMAIL)).sendKeys("test@test.com");
 	}
 
 
 	private void fareReviewPage() {
 		// TODO Auto-generated method stub
-		driver.findElement(By.xpath(".//*[@id='page_wrapper']/form/div/div[12]/div/div/input")).click();
-
+		driver.findElement(By.xpath(TAM_Constants.FARE_REVIEW_CONTINUE)).click();
 	}
 
 
@@ -159,21 +164,21 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 		// TODO Auto-generated method stub
 		
 		//Click on Price
-		driver.findElement(By.id("price")).click();
-		sortingValidation(By.className("farePrice"));
+
+		driver.findElement(By.id(TAM_Constants.SORT_BY_PRICE)).click();
+		sortingValidation(By.className(TAM_Constants.FARE_PRICES));
 		
 		//Click on Time
-		driver.findElement(By.id("time")).click();
-		
+		driver.findElement(By.id(TAM_Constants.SORT_BY_TIME)).click();
+
 		//Click on Duration
-		driver.findElement(By.id("dur")).click();
-		
+		driver.findElement(By.id(TAM_Constants.SORT_BY_DURATION)).click();
 		
 		// Click on the first avail list
-		driver.findElement(By.xpath(".//*[@id='inBoundTable']/div[1]/a/ul")).click();
+		driver.findElement(By.xpath(TAM_Constants.FLIGHT_ITIN_RETURN)).click();
 		
 		//Click continue on the upsell page
-		driver.findElement(By.xpath(".//*[@id='page_wrapper']/div[2]/div[3]/div/a")).click();
+		driver.findElement(By.xpath(TAM_Constants.CONTINUE_BUTTON_UPSELL_PAGE_RETURN)).click();
 
 	}
 
@@ -182,21 +187,23 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 		// TODO Auto-generated method stub
 		
 		//Click on Price
-		driver.findElement(By.id("price")).click();
-		sortingValidation(By.className("farePrice"));
 		
+		driver.findElement(By.id(TAM_Constants.SORT_BY_PRICE)).click();
+		sortingValidation(By.className(TAM_Constants.FARE_PRICES));
+		
+
 		//Click on Time
-		driver.findElement(By.id("time")).click();
+		driver.findElement(By.id(TAM_Constants.SORT_BY_TIME)).click();
 		
 		//Click on Duration
-		driver.findElement(By.id("dur")).click();
+		driver.findElement(By.id(TAM_Constants.SORT_BY_DURATION)).click();
 		
 		
 		// Click on the first avail list
-		driver.findElement(By.xpath(".//*[@id='outBoundTable']/div[1]/a/ul")).click();
+		driver.findElement(By.xpath(TAM_Constants.FLIGHT_ITIN_DEP)).click();
 		
 		//Click continue on the upsell page
-		driver.findElement(By.xpath(".//*[@id='page_wrapper']/div[2]/div[2]/div/a")).click();
+		driver.findElement(By.xpath(TAM_Constants.CONTINUE_BUTTON_UPSELL_PAGE_DEP)).click();
 
 	}
 
@@ -231,7 +238,8 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 
 	private void calPage() {
 		//TODO: move hard Coding
-		driver.findElement(By.cssSelector("a>span")).click();
+		
+		driver.findElement(By.cssSelector(TAM_Constants.CAL_CONTINUE)).click();
 
 	}
 
@@ -239,19 +247,22 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 	private void searchPage() {
 		//Click on flight bookin
 		//TODO: move hard Coding
-		driver.findElement(By.id("block_text")).click();
+		
+		driver.findElement(By.id(TAM_Constants.BOOK_FLIGHT)).click();
 
 		//Enter From location
 		//TODO: move hard Coding
-		driver.findElement(By.id("B_LOCATION_1")).sendKeys("RIO");
+		
+		driver.findElement(By.id(TAM_Constants.FROM_LOCATION)).sendKeys("RIO");
 
 		//Enter To location
 		//TODO: move hard Coding
-		driver.findElement(By.id("E_LOCATION_1")).sendKeys("SSA");
+		
+		driver.findElement(By.id(TAM_Constants.TO_LOCATION)).sendKeys("SSA");
 
 		//Select type of Trip || Select round Trip
 		//TODO: move hard Coding
-		driver.findElement(By.id("oneWay")).click();
+		driver.findElement(By.id(TAM_Constants.TRIP_TYPE)).click();
 
 		//Update the dates
 		updateDates();
@@ -260,7 +271,7 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 		handleFlexiDates();
 
 		//Select class from the Drop Down
-		handleCabinClassSelectio();
+		handleCabinClassSelection();
 
 		//Select PAX Counts
 		/*
@@ -269,7 +280,8 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 
 		//Click on Continue 
 		
-		driver.findElement(By.xpath(".//*[@id='searchForm']/div[1]/div[5]/div[2]/div/input")).click();
+		
+		driver.findElement(By.xpath(TAM_Constants.SEARCH_BUTTON)).click();
 	}
 
 
@@ -280,10 +292,11 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 	 *    No operation required
 	 */
 
-	private void handleCabinClassSelectio() {
+	private void handleCabinClassSelection() {
 
 		//TODO: move hard Coding
-		Select classDropDown = new Select(driver.findElement(By.id("COMMERCIAL_FARE_FAMILY_1")));
+		
+		Select classDropDown = new Select(driver.findElement(By.id(TAM_Constants.CABIN_CLASS)));
 		int sizeOfDropDown = classDropDown.getOptions().size();
 
 		/*
@@ -296,7 +309,8 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 	private void handleFlexiDates() {
 
 		//TODO: move hard Coding
-		WebElement flexiDate = driver.findElement(By.id("DATE_RANGE_VALUE_1"));
+		
+		WebElement flexiDate = driver.findElement(By.id(TAM_Constants.FLEXIDATES_CHECKBOX));
 
 		if(! (flexiDate.isSelected()) ){
 			flexiDate.click();
@@ -307,7 +321,8 @@ public class TAMProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 	private void updateDates() {
 
 		//TODO: move hard Coding
-		Select depMonth = new Select(driver.findElement(By.id("Month1")));
+		
+		Select depMonth = new Select(driver.findElement(By.id(TAM_Constants.CAL_MONTH)));
 
 		//TODO: move hard Coding
 		depMonth.selectByIndex(2);

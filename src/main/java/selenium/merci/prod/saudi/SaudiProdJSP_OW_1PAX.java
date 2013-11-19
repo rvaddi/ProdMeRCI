@@ -88,8 +88,6 @@ public class SaudiProdJSP_OW_1PAX extends SeleniumSEPTestAdvanced{
 
 		confPage();
 
-
-
 	}
 
 	private void confPage() {

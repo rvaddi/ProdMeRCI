@@ -64,8 +64,6 @@ public class ProdSanityJSP_OW_HE_Sorting extends SeleniumSEPTestAdvanced{
 	public void scenario() throws Exception{
 
 		
-		readPropFile();
-		
 		handleCustomerSearchPage();
 
 		calPage();
@@ -81,7 +79,9 @@ public class ProdSanityJSP_OW_HE_Sorting extends SeleniumSEPTestAdvanced{
 	}
 	
 	
-	private void readPropFile() throws IOException {
+	private List<String> readPropFile() throws IOException {
+		
+		List<String> storedCountryList = new ArrayList<String>();;
 		
 		try {
 			File file = new File("HE_COUNTRY_DROPDOWN.properties");
@@ -90,8 +90,6 @@ public class ProdSanityJSP_OW_HE_Sorting extends SeleniumSEPTestAdvanced{
 			properties.load(fileInput);
 			String countryList = properties.getProperty("COUNTRY_LIST");
 			String[] splitedCountryList = countryList.split(",");
-			
-			List<String> storedCountryList = new ArrayList<String>();
 			
 			for (String string : splitedCountryList) {
 				storedCountryList.add(string);
@@ -102,11 +100,13 @@ public class ProdSanityJSP_OW_HE_Sorting extends SeleniumSEPTestAdvanced{
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} 
+		
+		return storedCountryList;
 	}
 
 
 
-	private void ALPIPage() {
+	private void ALPIPage() throws IOException {
 
 		enterContactDetails();
 		enterPAXDetails();
@@ -116,7 +116,7 @@ public class ProdSanityJSP_OW_HE_Sorting extends SeleniumSEPTestAdvanced{
 
 	}
 	
-	private void enterPAXDetails() {
+	private void enterPAXDetails() throws IOException {
 		
 		
 		Select title = new Select(driver.findElement(By.id(PAX_TITLE)));
@@ -151,9 +151,16 @@ public class ProdSanityJSP_OW_HE_Sorting extends SeleniumSEPTestAdvanced{
 		
 		// country id
 		Select countryDropDown = new Select(driver.findElement(By.id(PAX_ALPI_COUNTRY)));
-		countryDropDown.selectByIndex(countryDropDown.getOptions().size()-1);
+		List<String> listFromURL = readValuesFromCountryDropDown(countryDropDown);
+		List<String> listFromPropFile = readPropFile();
 		
-		readValuesFromCountryDropDown(countryDropDown);
+		if(listFromURL.equals(listFromPropFile)){
+			System.out.println("Sorting pass");
+		}else{
+			System.out.println("Sorting Fail");
+		}
+		
+		countryDropDown.selectByIndex(countryDropDown.getOptions().size()-1);
 		
 		// doc type id
 		Select docType = new Select(driver.findElement(By.id(PAX_ALPI_DOC_TYPE)));
@@ -181,15 +188,17 @@ public class ProdSanityJSP_OW_HE_Sorting extends SeleniumSEPTestAdvanced{
 		
 	}
 	
-	private void readValuesFromCountryDropDown(Select countryDropDown) {
+	private List<String> readValuesFromCountryDropDown(Select countryDropDown) {
 
-		ListIterator<WebElement> iteratot = countryDropDown.getOptions().listIterator();
+		List<String> selectListInAlpiPage = new ArrayList<String>(); 
+		int sizeOfcountryDropDown = countryDropDown.getOptions().size();
 		
-		for (Iterator iterator = countryDropDown.getOptions().listIterator(); iterator.hasNext();) {
-			
+		for (int i = 0 ; i < sizeOfcountryDropDown ; i++) {
+			if(countryDropDown.getOptions().get(i) != null && !(countryDropDown.getOptions().get(i).getAttribute("value").length() < 1) ){
+				selectListInAlpiPage.add(countryDropDown.getOptions().get(i).getAttribute("value"));
+			}
 		}
-		
-		
+		return selectListInAlpiPage;
 	}
 
 
@@ -241,7 +250,7 @@ public class ProdSanityJSP_OW_HE_Sorting extends SeleniumSEPTestAdvanced{
 
 	private void handleCustomerSearchPage() throws Exception,
 	InterruptedException {
-		openPage("http://m.elal.co.il/booking?lang=he&country=Argentina");
+		openPage("http://m.elal.co.il/booking?lang=en&country=Argentina");
 
 		// click on OneWay
 		driver.findElement(By.id("oneway")).click();
@@ -252,10 +261,12 @@ public class ProdSanityJSP_OW_HE_Sorting extends SeleniumSEPTestAdvanced{
 		driver.findElement(By.id("origin")).sendKeys("TLV");
 		driver.switchTo().activeElement();
 		Thread.sleep(1000);
+		// Israel, Tel Aviv (TLV)
 		driver.findElement(By.linkText("ישראל, תל אביב (TLV)")).click();
 
 
 		driver.findElement(By.id("destination")).clear();
+		//USA, New York (NYC)
 		driver.findElement(By.id("destination")).sendKeys("NYC");
 		driver.switchTo().activeElement();
 		Thread.sleep(1000);
@@ -325,6 +336,7 @@ public class ProdSanityJSP_OW_HE_Sorting extends SeleniumSEPTestAdvanced{
 
 		List<WebElement> setList = driver.findElements(By.className("dwb"));
 		for (WebElement webElement : setList) {
+			// Set in english ""Set""
 			if(webElement.getText().equalsIgnoreCase("בחר")){
 				webElement.click();
 				break;
